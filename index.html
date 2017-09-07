@@ -3,8 +3,22 @@
     <head>
         <meta charset="utf-8">
         <title>图书管理系统</title>
+        <link rel="stylesheet" href="css/bootstrap.css">
     </head>
     <body>
-
+        <div class="container" id="table_template">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr is="table-header" :headers="headers"></tr>
+                </thead>
+                <tbody>
+                    <tr is="table-item" v-for="(item,index) in itemArray" :item="item" @click="clickItem"></tr>
+                </tbody>
+            </table>
+        </div>
+        <script src="js/vue.js"></script>
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/table-template.js"></script>
     </body>
 </html>
