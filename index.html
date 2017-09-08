@@ -9,10 +9,10 @@
         <div class="container" id="table_template">
             <table class="table table-hover table-striped">
                 <thead>
-                    <tr is="table-header" :headers="headers"></tr>
+                    <tr is="table-header" :headers="headers" :chose="selectAll" @click="choseAll"></tr>
                 </thead>
                 <tbody>
-                    <tr is="table-item" v-for="(item,index) in itemArray" :item="item" @click="clickItem"></tr>
+                    <tr is="table-item" v-for="(item,index) in itemArray" :item="item" :selectall="selectAll" :index="index" @add="choseItem" @delete="removeItem"></tr>
                 </tbody>
             </table>
         </div>
