@@ -3,7 +3,9 @@
     <head>
         <meta charset="utf-8">
         <title>图书管理系统</title>
+        <link rel="shortcut icon" href="img/library.ico">
         <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/vue-modal.css">
     </head>
     <body>
         <div class="container" id="table_template">
@@ -16,9 +18,20 @@
                 </tbody>
             </table>
         </div>
+        <div id="info_modal">
+            <my-modal v-if="showModal" @close="closeModal">
+                <h3 slot="header">{{ InfoHeader }}</h3>
+                <div slot="body">
+                    <div>
+                        <span style="float: left; background-color: red">左边</span>
+                    </div>
+                </div>
+            </my-modal>
+        </div>
         <script src="js/vue.js"></script>
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/bootstrap.js"></script>
         <script src="js/table-template.js"></script>
+        <script src="js/modal-panel.js"></script>
     </body>
 </html>

@@ -20,7 +20,7 @@ Vue.component('table-item', {
     </tr>',
     methods: {
         clickItem: function(){
-            alert('chose ' + this.index)
+            info_modal.showInfoModal(this.item.name, null)
         }
     },
     watch: {
@@ -34,10 +34,8 @@ Vue.component('table-item', {
         checked(val){
             if (val) {
                 this.$emit('add', [this.index])
-                // this.$parent.choseItem(this.index)
             }else{
                 this.$emit('delete', [this.index])
-                // this.$parent.removeItem(this.index)
             }
         }
     }
