@@ -26,19 +26,28 @@ Vue.component('my-modal', {
       </transition>'
 })
 
+Vue.component('info-item', {
+    props: ['name', 'value'],
+    template: '\
+               <div>\
+                 <span class="left-item">{{ name }}:</span>\
+                 <span class="right-item">{{ value }}</span>\
+               </div>'
+})
+
 var info_modal = new Vue({
     el: '#info_modal',
     data: {
         showModal: false,
-        InfoHeader: '',
-
+        infoHeader: '',
+        itemArray: []
     },
     methods: {
         closeModal: function(){
             this.showModal = false
         },
         showInfoModal: function(header, info){
-            this.InfoHeader = header
+            this.infoHeader = header
             this.showModal = true
         }
     }

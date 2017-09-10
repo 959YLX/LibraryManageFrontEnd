@@ -1,10 +1,4 @@
-function createBooks(number){
-    var books = []
-    for( var i = 0; i < number; i++){
-        books.push({name: "Tome", age: i + 18, sex: "man"})
-    }
-    return books
-}
+var default_header = ['编号', '名称', '分类号', '借出数量', '库存数量', '出版时间', '出版单位', '价格']
 
 Vue.component('table-item', {
     data: function(){
@@ -69,7 +63,7 @@ var basic_table = new Vue({
     el: "#table_template",
     data: {
         itemArray: null,
-        headers: null,
+        headers: default_header,
         chosen: null,
         selectAll: false
     },

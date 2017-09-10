@@ -6,9 +6,15 @@
         <link rel="shortcut icon" href="img/library.ico">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/vue-modal.css">
+        <link rel="stylesheet" href="css/my-table.css">
     </head>
     <body>
-        <div class="container" id="table_template">
+        <h1 class="text-center">图书管理系统</h1>
+        <br>
+        <div class="container" id="action_bar">
+            <button type="button" name="button" class="btn btn-primary btn-lg">刷新</button>
+        </div>
+        <div class="container my-table" id="table_template">
             <table class="table table-hover table-striped">
                 <thead>
                     <tr is="table-header" :headers="headers" :chose="selectAll" @click="choseAll"></tr>
@@ -20,11 +26,15 @@
         </div>
         <div id="info_modal">
             <my-modal v-if="showModal" @close="closeModal">
-                <h3 slot="header">{{ InfoHeader }}</h3>
-                <div slot="body">
-                    <div>
-                        <span style="float: left; background-color: red">左边</span>
-                    </div>
+                <h3 slot="header">{{ infoHeader }}</h3>
+                <div slot="body" class="container body-contain">
+                    <!-- <div>
+                        <span class="left-item">名称:</span>
+                        <span class="right-item">计算机组成原理与汇编</span>
+                    </div> -->
+
+                    <info-item v-for="(item, index) in itemArray" :name="item.name" :value="item.value" :key="index"></info-item>
+
                 </div>
             </my-modal>
         </div>
