@@ -48,7 +48,7 @@
 
 .body-contain div {
     width: 100%;
-    height: 30px;
+    height: 50px;
     padding: 0 15%;
     margin: 15px 0;
 }
@@ -62,7 +62,7 @@
 .left-item {
     float: left;
     height: 100%;
-    font-size: 22px;
+    font-size: 25px;
     color: gray;
 }
 

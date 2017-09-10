@@ -93,6 +93,14 @@ var basic_table = new Vue({
                 child.checked = false
                 }
             })
+        },
+        getChonseItemName: function(){
+            var temp = []
+            var tables = this
+            this.chosen.forEach(function(element){
+                temp.push(tables.itemArray[element].name)
+            })
+            return temp
         }
     }
 })

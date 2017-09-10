@@ -1,0 +1,27 @@
+.action-bar {
+    margin: 10px auto 20px auto;
+
+    overflow: hidden;
+}
+
+.action-bar-refresh-button {
+    float: right;
+    margin-left: 5px;
+}
+
+.action-bar-trash-button {
+    width: 90px;
+}
+
+.action-bar-searcher {
+    height: 46px;
+    float: right;
+    width: 200px;
+    margin-right: 5px;
+}
+
+.action-bar-search-button {
+    float: right;
+    margin-left: 5px;
+    margin-right: 50px;
+}

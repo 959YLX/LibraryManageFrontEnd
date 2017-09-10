@@ -7,12 +7,18 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/vue-modal.css">
         <link rel="stylesheet" href="css/my-table.css">
+        <link rel="stylesheet" href="css/action-bar.css">
     </head>
     <body>
         <h1 class="text-center">图书管理系统</h1>
         <br>
-        <div class="container" id="action_bar">
-            <button type="button" name="button" class="btn btn-primary btn-lg">刷新</button>
+        <div class="container action-bar" id="action_bar">
+            <button type="button" name="button" class="btn btn-success btn-lg" @click="addItem">{{ addItemName }}</button>
+            <button type="button" name="button" class="btn btn-danger btn-lg" @click="deleteItem">删除</button>
+            <button type="button" name="button" class="btn btn-warning btn-lg action-bar-trash-button" @click="trashbin">{{ trashName }}</button>
+            <button type="button" name="button" class="btn btn-default btn-lg action-bar-refresh-button" @click="refresh">刷新</button>
+            <button type="button" name="button" class="btn btn-info btn-lg action-bar-search-button" @click="search">搜索</button>
+            <input type="text" name="searcher" placeholder="搜索" class="input action-bar-searcher" v-model="keyword">
         </div>
         <div class="container my-table" id="table_template">
             <table class="table table-hover table-striped">
@@ -25,16 +31,16 @@
             </table>
         </div>
         <div id="info_modal">
-            <my-modal v-if="showModal" @close="closeModal">
+            <my-modal v-show="showModal">
                 <h3 slot="header">{{ infoHeader }}</h3>
                 <div slot="body" class="container body-contain">
-                    <!-- <div>
-                        <span class="left-item">名称:</span>
-                        <span class="right-item">计算机组成原理与汇编</span>
-                    </div> -->
-
-                    <info-item v-for="(item, index) in itemArray" :name="item.name" :value="item.value" :key="index"></info-item>
-
+                    <message-item v-if="showMessage" :message="message"></message-item>
+                    <info-item v-if="showItem" v-for="(item, index) in itemArray" :name="item.name" :value="item.value" :key="index"></info-item>
+                    <delete-item v-if="showDelete" :names="deleteItemNames" :complete="trashModel"></delete-item>
+                </div>
+                <div slot="footer">
+                    <button class="btn btn-danger" @click="cancel" v-if="showCancel">取消</button>
+                    <button class="btn btn-success" @click="enter">确定</button>
                 </div>
             </my-modal>
         </div>
@@ -43,5 +49,6 @@
         <script src="js/bootstrap.js"></script>
         <script src="js/table-template.js"></script>
         <script src="js/modal-panel.js"></script>
+        <script src="js/action-bar.js"></script>
     </body>
 </html>
