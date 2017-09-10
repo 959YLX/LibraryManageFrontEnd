@@ -1,16 +1,36 @@
+var fixSize = function(){
+    var body_height = $('body').height()
+    var container_height = (body_height * 90) / 100 - 20
+    var height = (container_height * 1) / 10 - 10
+    var modal_body_height = (container_height * 8) / 10 - 10
+    console.log(container_height + '---' + height + '---' + modal_body_height)
+    $('#modal_container').css('max-height', container_height)
+    $('#modal_header').css('max-height', height)
+    $('#modal_footer').css('max-height', height)
+    $('#modal_body').css('max-height', modal_body_height)
+}
+
+$(window).resize(function () {
+    fixSize()
+});
+
+$(document).ready(function(){
+    fixSize()
+})
+
 Vue.component('my-modal', {
     template: '\
       <transition name="modal">\
         <div class="modal-mask">\
           <div class="modal-wrapper">\
-            <div class="modal-container">\
-              <div class="modal-header text-center">\
+            <div class="modal-container" id="modal_container">\
+              <div class="modal-header text-center" id="modal_header">\
                 <slot name="header"></slot>\
               </div>\
-              <div class="modal-body">\
+              <div class="modal-body" id="modal_body">\
                 <slot name="body"></slot>\
               </div>\
-              <div class="modal-footer">\
+              <div class="modal-footer" id="modal_footer">\
                 <slot name="footer"></slot>\
               </div>\
             </div>\
@@ -20,11 +40,12 @@ Vue.component('my-modal', {
 })
 
 Vue.component('info-item', {
-    props: ['name', 'value'],
+    props: ['name', 'value', 'edit'],
     template: '\
                <div>\
                  <span class="left-item">{{ name }}:</span>\
-                 <span class="right-item">{{ value }}</span>\
+                 <span class="right-item" v-show="!edit">{{ value }}</span>\
+                 <input class="right-item text-right" v-if="edit" :value="value"/>\
                </div>'
 })
 
@@ -52,6 +73,7 @@ var info_modal = new Vue({
         showDelete: false,
         showMessage: false,
         trashModel: false,
+        editModal: false,
         deleteItemNames: null,
         itemArray: null,
         infoHeader: '',
@@ -61,7 +83,7 @@ var info_modal = new Vue({
         enter: function(){
             this.showModal = false
             //按下了确定
-            if (showDelete){
+            if (this.showDelete){
                 //请求接口
             }
         },
@@ -69,9 +91,14 @@ var info_modal = new Vue({
             this.showModal = false
             //按下了取消
         },
+        edit: function(){
+            this.editModal = true
+            //按下了编辑
+        },
         showInfoModal: function(header, info){
             this.clearStatus()
             this.infoHeader = header
+            // this.itemArray = info
             this.showItem = true
             this.showModal = true
         },
@@ -92,11 +119,15 @@ var info_modal = new Vue({
         clearStatus: function(){
             this.showItem = false
             this.showDelete = false
+            this.editModal = false
         }
     },
     computed: {
         showCancel: function(){
             return this.showDelete
+        },
+        showEdit: function(){
+            return this.showItem
         }
     }
 })

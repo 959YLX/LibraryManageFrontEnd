@@ -27,9 +27,9 @@ Vue.component('table-item', {
         },
         checked(val){
             if (val) {
-                this.$emit('add', [this.index])
+                this.$emit('select', [this.index])
             }else{
-                this.$emit('delete', [this.index])
+                this.$emit('cancel', [this.index])
             }
         }
     }

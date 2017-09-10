@@ -10,13 +10,23 @@
   transition: opacity .3s ease;
 }
 
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
 .modal-wrapper {
+  height: 100%;
   display: table-cell;
   vertical-align: middle;
 }
 
 .modal-container {
-  width: 50%;
+  width: 60%;
+  max-height: 85%;
   margin: 0px auto;
   padding: 10px 30px;
   background-color: #fff;
@@ -32,12 +42,11 @@
 }
 
 .modal-header {
-    height: 10%;
     padding: 10px;
 }
 
 .modal-body {
-    height: 80%;
+    overflow-y: auto;
     padding: 5px 0;
 }
 
@@ -50,11 +59,10 @@
     width: 100%;
     height: 50px;
     padding: 0 15%;
-    margin: 15px 0;
+    margin: 10px 0;
 }
 
 .modal-footer {
-    height: 10%;
     padding: 10px;
     margin-bottom: 0;
 }
