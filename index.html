@@ -37,11 +37,12 @@
                     <message-item v-if="showMessage" :message="message"></message-item>
                     <info-item v-if="showItem" v-for="(item, index) in itemArray" :name="item.name" :value="item.value" :key="index" :edit="editModal"></info-item>
                     <delete-item v-if="showDelete" :names="deleteItemNames" :complete="trashModel"></delete-item>
+                    <select-type v-if="showSelect" @book="importInfo('book')" @magazine="importInfo('magazine')"></select-type>
                 </div>
                 <div slot="footer">
                     <button class="btn btn-primary" @click="edit" v-if="showEdit">编辑</button>
                     <button class="btn btn-danger" @click="cancel" v-if="showCancel">取消</button>
-                    <button class="btn btn-success" @click="enter">确定</button>
+                    <button class="btn btn-success" @click="enter"v-show="showEnter" >确定</button>
                 </div>
             </my-modal>
         </div>
@@ -51,5 +52,6 @@
         <script src="js/table-template.js"></script>
         <script src="js/modal-panel.js"></script>
         <script src="js/action-bar.js"></script>
+        <script src="js/fix-modal-size.js"></script>
     </body>
 </html>

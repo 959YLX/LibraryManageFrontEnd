@@ -18,6 +18,14 @@ body {
     height: 100%;
 }
 
+.select-button-left {
+    width: 49.9793%
+}
+
+.select-button-right {
+    width: 49%
+}
+
 .modal-wrapper {
   height: 100%;
   display: table-cell;
@@ -57,9 +65,9 @@ body {
 
 .body-contain div {
     width: 100%;
-    height: 50px;
-    padding: 0 15%;
-    margin: 10px 0;
+    height: 45px;
+    padding: 0 5%;
+    margin: 5px 0;
 }
 
 .modal-footer {

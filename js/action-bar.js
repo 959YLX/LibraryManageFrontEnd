@@ -12,16 +12,24 @@ var action_bar = new Vue({
     },
     methods: {
         refresh: function(){
-
+            //刷新
+            console.log("刷新")
         },
         trashbin: function(event){
             this.trashModel = !this.trashModel
+            console.log("切换到回收站模式")
         },
         addItem: function(){
-
+            if (this.trashModel){
+                //恢复
+                console.log("恢复" + basic_table.getChonseItemName().toString())
+            }else{
+                info_modal.showAddModal(addItemButtonName, [], [])
+            }
         },
         search: function(){
-            alert(this.keyword)
+            //搜索
+            console.log("刷新:keyword = " + this.keyword)
         },
         deleteItem: function(){
             info_modal.showDeleteModal(deleteHeader, basic_table.getChonseItemName(), this.trashModel)
