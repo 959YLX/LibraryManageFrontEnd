@@ -1,4 +1,4 @@
-var default_header = ['编号', '名称', '分类号', '借出数量', '库存数量', '出版时间', '出版单位', '价格']
+// var default_header = ['编号', '名称', '分类号', '借出数量', '库存数量', '出版时间', '出版单位', '价格']
 
 Vue.component('table-item', {
     data: function(){
@@ -63,11 +63,18 @@ var basic_table = new Vue({
     el: "#table_template",
     data: {
         itemArray: null,
-        headers: default_header,
+        headers: null,
         chosen: null,
-        selectAll: false
+        selectAll: false,
+        total_page: 1,
+        current_page: 1
     },
     methods: {
+        setItemList: function(total_page, current_page, current_list){
+            this.current_page = current_page
+            this.total_page = total_page
+            this.itemArray = current_list
+        },
         clickItem: function(data){
             console.log(data)
         },
@@ -101,6 +108,20 @@ var basic_table = new Vue({
                 temp.push(tables.itemArray[element].name)
             })
             return temp
+        },
+        after: function(){
+
+        },
+        next: function(){
+
+        }
+    },
+    computed: {
+        showBefore: function(){
+            return this.current_page > 1
+        },
+        showAfter: function(){
+            return this.total_page != this.current_page
         }
     }
 })

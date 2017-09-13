@@ -134,6 +134,8 @@ var info_modal = new Vue({
         clearStatus: function(){
             this.showItem = false
             this.showDelete = false
+            this.showMessage = false
+            this.showSelect = false
             this.editModal = false
         }
     },

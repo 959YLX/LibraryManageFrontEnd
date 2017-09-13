@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="css/vue-modal.css">
         <link rel="stylesheet" href="css/my-table.css">
         <link rel="stylesheet" href="css/action-bar.css">
+        <link rel="stylesheet" href="css/table-template.css">
     </head>
     <body>
         <h1 class="text-center">图书管理系统</h1>
@@ -29,6 +30,12 @@
                     <tr is="table-item" v-for="(item,index) in itemArray" :item="item" :selectall="selectAll" :index="index" @select="choseItem" @cancel="removeItem"></tr>
                 </tbody>
             </table>
+            <p class="text-center">
+                <button type="button" class="btn btn-default" v-show="showBefore" @click="before">上一页</button>
+                <span class="total_span">总共:{{ total_page }}页</span>
+                <span class="current_span">当前第:{{ current_page }}页</span>
+                <button type="button" class="btn btn-default" v-show="showAfter" @click="next">下一页</button>
+            </p>
         </div>
         <div id="info_modal" class="container">
             <my-modal v-show="showModal">

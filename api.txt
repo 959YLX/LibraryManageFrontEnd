@@ -1,0 +1,63 @@
+hostname: http://hostname/librarymanage
+getList:GET
+    /getList?trash=${trashModel}&page=${page, default=1}
+    {
+        code: 0,
+        total: 1,
+        current: 1,
+        list: [{"name": "${name}"},
+                {"name": "${name}"},
+                {"name": "${name}"},
+                {"name": "${name}"}
+              ]
+    }
+getHeader:GET
+    /getHeader
+    {
+        code: 0,
+        book: [],
+        magazine: []
+        table: []
+    }
+
+delete:POST
+    /delete
+        id = []
+    {
+        code: 0
+        msg: ""
+    }
+
+search:GET
+    /search?trashModel=${trashModel}&keyword=${keyword default=""}&page=${page, default=1}
+    {
+        code: 0,
+        total: 1,
+        current: 1,
+        list: [{"name": "${name}"},
+                {"name": "${name}"},
+                {"name": "${name}"},
+                {"name": "${name}"}
+              ]
+    }
+
+add:POST
+    /add
+        type: magazine/book,
+        obj: {}
+    {
+        code: 0,
+        msg: ""
+    }
+
+recover:POST
+    /recover
+        id = []
+    {
+        code: 0,
+        msg: ""
+    }
+
+code
+    0: 成功
+    1: 系统错误
