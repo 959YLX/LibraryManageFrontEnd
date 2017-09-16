@@ -11,15 +11,6 @@ getList:GET
                 {"name": "${name}"}
               ]
     }
-getHeader:GET
-    /getHeader
-    {
-        code: 0,
-        book: [],
-        magazine: []
-        table: []
-    }
-
 delete:POST
     /delete
         id = []

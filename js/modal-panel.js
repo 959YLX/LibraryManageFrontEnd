@@ -50,7 +50,14 @@ Vue.component('select-type', {
                 <div>\
                     <button class="btn btn-lg btn-default select-button-left" @click="$emit(\'book\')">导入书本信息</button>\
                     <button class="btn btn-lg btn-default select-button-right" @click="$emit(\'magazine\')">导入期刊信息</button>\
-                </div>'
+                    <button class="btn btn-lg btn-default select-button-file" @click="$emit(\'file\')">从文件导入</button>\
+                    <input type="file" id="myFile" v-show="false" @change="choseFile"/>\
+                </div>',
+    methods: {
+        choseFile: function(){
+            console.log($('#myFile').get(0).files[0])
+        }
+    }
 })
 
 var info_modal = new Vue({
@@ -67,8 +74,8 @@ var info_modal = new Vue({
         itemArray: null,
         infoHeader: '',
         message: '',
-        booksInfo: [],
-        magazineInfo: []
+        booksInfo: table_header.concat(book_addtion),
+        magazineInfo: table_header.concat(magazine_addtion)
     },
     methods: {
         enter: function(){
@@ -93,7 +100,7 @@ var info_modal = new Vue({
                 this.booksInfo.forEach(function(info){
                     item.push({name: info, value: null})
                 })
-            }else{
+            }else if(type == "magazine"){
                 this.magazineInfo.forEach(function(info){
                     item.push({name: info, value: null})
                 })
@@ -101,6 +108,9 @@ var info_modal = new Vue({
             this.itemArray = item
             this.editModal = true
             this.showItem = true
+        },
+        openFile: function(){
+            $('#myFile').trigger('click')
         },
         showInfoModal: function(header, info){
             this.clearStatus()

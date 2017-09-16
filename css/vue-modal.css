@@ -19,11 +19,15 @@ body {
 }
 
 .select-button-left {
-    width: 49.9793%
+    width: 33%
 }
 
 .select-button-right {
-    width: 49%
+    width: 33%
+}
+
+.select-button-file {
+    width: 33%
 }
 
 .modal-wrapper {

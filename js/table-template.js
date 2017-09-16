@@ -1,4 +1,6 @@
-// var default_header = ['编号', '名称', '分类号', '借出数量', '库存数量', '出版时间', '出版单位', '价格']
+var table_header = ['编号', '名称', '分类号', '借出数量', '库存数量', '出版时间', '出版单位', '价格']
+var book_addtion = ['ISBN', '作者', '页数', '字数', '每千字价格']
+var magazine_addtion = ['ISSN', '检索', '学科领域', '影响因子', '出版周期', '每期论文数', '平均单篇论文价格']
 
 Vue.component('table-item', {
     data: function(){
@@ -63,7 +65,7 @@ var basic_table = new Vue({
     el: "#table_template",
     data: {
         itemArray: null,
-        headers: null,
+        headers: table_header,
         chosen: null,
         selectAll: false,
         total_page: 1,
@@ -109,7 +111,7 @@ var basic_table = new Vue({
             })
             return temp
         },
-        after: function(){
+        before: function(){
 
         },
         next: function(){
