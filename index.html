@@ -27,7 +27,7 @@
                     <tr is="table-header" :headers="headers" :chose="selectAll" @click="choseAll"></tr>
                 </thead>
                 <tbody>
-                    <tr is="table-item" v-for="(item,index) in itemArray" :item="item" :selectall="selectAll" :index="index" @select="choseItem" @cancel="removeItem"></tr>
+                    <tr is="table-item" v-for="(item,index) in itemArray" :item="item" :selectall="selectAll" :index="index" @select="choseItem" @cancel="removeItem" @show="showInfo"></tr>
                 </tbody>
             </table>
             <p class="text-center">
@@ -44,7 +44,7 @@
                     <message-item v-if="showMessage" :message="message"></message-item>
                     <info-item v-if="showItem" v-for="(item, index) in itemArray" :name="item.name" :value="item.value" :key="index" :edit="editModal"></info-item>
                     <delete-item v-if="showDelete" :names="deleteItemNames" :complete="trashModel"></delete-item>
-                    <select-type v-if="showSelect" @book="importInfo('book')" @magazine="importInfo('magazine')" @file="openFile"></select-type>
+                    <select-type v-if="showSelect" @book="importInfo('book')" @magazine="importInfo('magazine')" @file="openFile" @chosed="chosedFile"></select-type>
                     <!-- <open-file v-if="showFileChooser" @chose-file="choseFile"></open-file> -->
                 </div>
                 <div slot="footer">
@@ -61,5 +61,6 @@
         <script src="js/modal-panel.js"></script>
         <script src="js/action-bar.js"></script>
         <script src="js/fix-modal-size.js"></script>
+        <script src="js/dataset.js"></script>
     </body>
 </html>

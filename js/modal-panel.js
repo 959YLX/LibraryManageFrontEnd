@@ -51,13 +51,8 @@ Vue.component('select-type', {
                     <button class="btn btn-lg btn-default select-button-left" @click="$emit(\'book\')">导入书本信息</button>\
                     <button class="btn btn-lg btn-default select-button-right" @click="$emit(\'magazine\')">导入期刊信息</button>\
                     <button class="btn btn-lg btn-default select-button-file" @click="$emit(\'file\')">从文件导入</button>\
-                    <input type="file" id="myFile" v-show="false" @change="choseFile"/>\
-                </div>',
-    methods: {
-        choseFile: function(){
-            console.log($('#myFile').get(0).files[0])
-        }
-    }
+                    <input type="file" id="myFile" v-show="false" @change="$emit(\'chosed\')"/>\
+                </div>'
 })
 
 var info_modal = new Vue({
@@ -115,7 +110,7 @@ var info_modal = new Vue({
         showInfoModal: function(header, info){
             this.clearStatus()
             this.infoHeader = header
-            // this.itemArray = info
+            this.itemArray = info
             this.showItem = true
             this.showModal = true
         },
@@ -136,8 +131,6 @@ var info_modal = new Vue({
         showAddModal: function(header, booksInfo, magazineInfo){
             this.clearStatus()
             this.infoHeader = header
-            this.booksInfo = booksInfo
-            this.magazineInfo = magazineInfo
             this.showSelect = true
             this.showModal = true
         },
@@ -147,6 +140,10 @@ var info_modal = new Vue({
             this.showMessage = false
             this.showSelect = false
             this.editModal = false
+        },
+        chosedFile: function(){
+            this.showModal = false
+            //异步上传文件
         }
     },
     computed: {

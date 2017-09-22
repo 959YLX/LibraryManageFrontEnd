@@ -3,17 +3,30 @@ getList:GET
     /getList?trash=${trashModel}&page=${page, default=1}
     {
         code: 0,
-        total: 1,
-        current: 1,
-        list: [{"name": "${name}"},
-                {"name": "${name}"},
-                {"name": "${name}"},
-                {"name": "${name}"}
-              ]
+        data: {
+            total: 1,
+            current: 1,
+            table: [
+                {
+                    id: 7,
+                    name: "中华人民共和国宪法",
+                    classicIndex: 'G',
+                    inventory: 10,
+                    borrowedNumber: 100,
+                    publicationYear: "2017-09-21",
+                    publisher: "中国水利水电出版社",
+                    price: 29.02,
+                }
+            ],
+            infos: [
+                {
+                    type: "book"
+                }
+            ]
     }
 delete:POST
     /delete
-        id = []
+        id = "1|2|3"
     {
         code: 0
         msg: ""
@@ -43,7 +56,15 @@ add:POST
 
 recover:POST
     /recover
-        id = []
+        ids = []
+    {
+        code: 0,
+        msg: ""
+    }
+
+upload:POST
+    /upload
+        file = ${file}
     {
         code: 0,
         msg: ""

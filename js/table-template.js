@@ -1,6 +1,8 @@
-var table_header = ['编号', '名称', '分类号', '借出数量', '库存数量', '出版时间', '出版单位', '价格']
-var book_addtion = ['ISBN', '作者', '页数', '字数', '每千字价格']
-var magazine_addtion = ['ISSN', '检索', '学科领域', '影响因子', '出版周期', '每期论文数', '平均单篇论文价格']
+var table_header = ['编号', '名称', '分类号', '库存数量', '借出数量', '出版时间', '出版单位', '价格']
+var book_addtion = ['ISBN', '作者', '页数', '字数']
+var magazine_addtion = ['ISSN', '检索', '学科领域', '影响因子', '出版周期', '每期论文数']
+var book_addtion_preprice = ['每千字价格']
+var magazine_addtion_avgprice = ['平均单篇论文价格']
 
 Vue.component('table-item', {
     data: function(){
@@ -12,13 +14,8 @@ Vue.component('table-item', {
     template:
     '<tr>\
     <td><input type="checkbox" v-model="checked"/></td>\
-    <td class="text-center" v-for="value in item" @click="clickItem">{{ value }}</td>\
+    <td class="text-center" v-for="value in item" @click="$emit(\'show\', [index])">{{ value }}</td>\
     </tr>',
-    methods: {
-        clickItem: function(){
-            info_modal.showInfoModal(this.item.name, null)
-        }
-    },
     watch: {
         selectall(val){
             if (val){
@@ -77,8 +74,9 @@ var basic_table = new Vue({
             this.total_page = total_page
             this.itemArray = current_list
         },
-        clickItem: function(data){
-            console.log(data)
+        showInfo: function(data){
+            var index = data[0]
+            info_modal.showInfoModal(this.itemArray[index].name, getInfos(this.current_page, index))
         },
         choseItem: function(data){
             if (this.chosen == null) {
@@ -104,7 +102,6 @@ var basic_table = new Vue({
             })
         },
         getChonseItemName: function(){
-            var temp = []
             var tables = this
             this.chosen.forEach(function(element){
                 temp.push(tables.itemArray[element].name)

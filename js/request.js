@@ -9,6 +9,7 @@ var api_delete = "/delete"
 var api_search = "/search"
 var api_add = "/add"
 var api_recover = "/recover"
+var api_upload = "/upload"
 
 var dataType = "json"
 
@@ -27,27 +28,21 @@ var getList = function(basic_table, info_modal, action_bar, page){
     var data = {trashModel: action_bar.trashModel, page: page}
     var callback = function(response, args){
         var basic_table = args[0]
-        basic_table.setItemList(response.total, response.current, response.list)
+        var saveData = args[1]
+        saveData(response.data.current, response.data.table, response.data.addition)
+        basic_table.setItemList(response.data.total, response.data.current, response.data.table)
     }
-    sendRequest(url, data, GET, info_modal, callback, [basic_table])
-}
-
-var getHeader = function(){
-    var url = hostname + api_get_header
-    var callback = function(response, args){
-        var basic_table = args[0]
-        var info_modal = args[1]
-        basic_table.headers = response.table
-        info_modal.booksInfo = response.book
-        info_modal.magazineInfo = response.magazine
-    }
-    sendRequest(url, null, GET, info_modal, callback, [basic_table, info_modal])
+    sendRequest(url, data, GET, info_modal, callback, [basic_table, saveData])
 }
 
 var deleteItems = function(){
     var url = hostname + api_delete
     var deleteId = basic_table.getChonseItemName()
-    var data = {id: deleteId}
+    var contain = ""
+    deleteId.forEach(function(id){
+        contain += (id + "|")
+    })
+    var data = {ids: contain}
     var callback = function(response, args){
         info_modal.showMessageModal(successHeader, "删除成功")
         refresh(args[0], args[1], args[2])
@@ -67,7 +62,8 @@ var search = function(keyword){
 
 var addItemInfo = function(type, item){
     var url = hostname + api_add
-    var data = {type: type, obj: item}
+    item["type"] = type
+    var data = item
     var callback = function(response, args){
         var info_modal = args[1]
         info_modal.showMessageModal(successHeader, "增加成功")
@@ -89,6 +85,30 @@ var recoverItem = function(){
         refresh(basic_table, info_modal, action_bar)
     }
     sendRequest(url, data, POST, info_modal, callback, [basic_table, info_modal, action_bar])
+}
+
+var analyseData = function(data){
+
+}
+
+
+var buildPackage = function(type, infos){
+    var data = {type: type, id: infos.id, name: infos.name, classicIndex: infos.classicIndex, inventory: infos.inventory,
+                borrowedNumber: infos.borrowedNumber, publicationYear: infos.publicationYear, publisher: infos.publisher,
+                price: infos.price}
+    if (type == "book"){
+        data["ISBN"] = infos.ISBN
+        data["editor"] = infos.editor
+        data["pageCount"] = infos.pageCount
+        data["letterCount"] = infos.letterCount
+    }else if(type == "magazine"){
+        data["ISSN"] = infos.ISSN
+        data["ISDNumber"] = infos.ISDNumber
+        data["subject"] = infos.subject
+        data["impactFactor"] = infos.impactFactor
+        data["publishingCycle"] = infos.publishingCycle
+        data["papers"] = infos.papers
+    }
 }
 
 var sendRequest(url, data, method, info_modal, callback, args){
