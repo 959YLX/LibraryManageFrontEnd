@@ -31,10 +31,10 @@
                 </tbody>
             </table>
             <p class="text-center">
-                <button type="button" class="btn btn-default" v-show="showBefore" @click="before">上一页</button>
+                <button type="button" class="btn btn-default" v-show="showBefore" @click="changePage(false)">上一页</button>
                 <span class="total_span">总共:{{ total_page }}页</span>
                 <span class="current_span">当前第:{{ current_page }}页</span>
-                <button type="button" class="btn btn-default" v-show="showAfter" @click="next">下一页</button>
+                <button type="button" class="btn btn-default" v-show="showAfter" @click="changePage(true)">下一页</button>
             </p>
         </div>
         <div id="info_modal" class="container">
@@ -42,7 +42,7 @@
                 <h3 slot="header">{{ infoHeader }}</h3>
                 <div slot="body" class="container body-contain">
                     <message-item v-if="showMessage" :message="message"></message-item>
-                    <info-item v-if="showItem" v-for="(item, index) in itemArray" :name="item.name" :value="item.value" :key="index" :edit="editModal"></info-item>
+                    <info-item v-if="showItem" v-for="(item, index) in itemArray" :name="item.name" :value="item.value" :key="index" :index="index" :edit="editModal" :close="sendCloseCommand" @final-value="submitValue"></info-item>
                     <delete-item v-if="showDelete" :names="deleteItemNames" :complete="trashModel"></delete-item>
                     <select-type v-if="showSelect" @book="importInfo('book')" @magazine="importInfo('magazine')" @file="openFile" @chosed="chosedFile"></select-type>
                     <!-- <open-file v-if="showFileChooser" @chose-file="choseFile"></open-file> -->
@@ -62,5 +62,6 @@
         <script src="js/action-bar.js"></script>
         <script src="js/fix-modal-size.js"></script>
         <script src="js/dataset.js"></script>
+        <script src="js/request.js"></script>
     </body>
 </html>

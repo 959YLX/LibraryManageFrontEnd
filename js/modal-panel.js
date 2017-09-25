@@ -20,13 +20,23 @@ Vue.component('my-modal', {
 })
 
 Vue.component('info-item', {
-    props: ['name', 'value', 'edit'],
+    data: function(){
+        return {
+            myValue: this.value
+        }
+    },
+    props: ['name', 'value', 'edit', 'close', 'index'],
     template: '\
                <div>\
                  <span class="left-item">{{ name }}:</span>\
                  <span class="right-item" v-show="!edit">{{ value }}</span>\
-                 <input class="right-item text-right" v-if="edit" :value="value"/>\
-               </div>'
+                 <input class="right-item text-right" v-if="edit" v-model="myValue"/>\
+               </div>',
+    watch: {
+        close(){
+            this.$emit("final-value", [this.index, this.myValue])
+        }
+    }
 })
 
 Vue.component('delete-item', {
@@ -65,31 +75,42 @@ var info_modal = new Vue({
         showSelect: false,
         trashModel: false,
         editModal: false,
+        sendCloseCommand: false,
         deleteItemNames: null,
         itemArray: null,
-        infoHeader: '',
+        editResult: {},
+        infoHeader: [],
         message: '',
+        currentInfoType: '',
         booksInfo: table_header.concat(book_addtion),
         magazineInfo: table_header.concat(magazine_addtion)
     },
     methods: {
         enter: function(){
-            this.showModal = false
-            //按下了确定
             if (this.showDelete){
                 //请求接口
+            }else if (this.editModal) {
+                //编辑模式
+                this.sendCloseCommand = !this.sendCloseCommand
+            }
+            this.showModal = false
+        },
+        submitValue: function(data){
+            this.editResult[data[0]] = data[1]
+            if (data[0] == this.itemArray.length - 1){
+                addItemInfo(updateInfo(this.editResult, this.currentInfoType))
             }
         },
         cancel: function(){
             this.showModal = false
-            //按下了取消
         },
         edit: function(){
             this.editModal = true
-            //按下了编辑
+            this.editResult = {}
         },
         importInfo: function(type){
             this.showSelect = false
+            this.currentInfoType = type
             var item = []
             if (type == "book"){
                 this.booksInfo.forEach(function(info){
@@ -102,15 +123,17 @@ var info_modal = new Vue({
             }
             this.itemArray = item
             this.editModal = true
+            this.editResult = {}
             this.showItem = true
         },
         openFile: function(){
             $('#myFile').trigger('click')
         },
-        showInfoModal: function(header, info){
+        showInfoModal: function(header, info, type){
             this.clearStatus()
             this.infoHeader = header
             this.itemArray = info
+            this.currentInfoType = type
             this.showItem = true
             this.showModal = true
         },
@@ -128,7 +151,7 @@ var info_modal = new Vue({
             this.message = message
             this.showModal = true
         },
-        showAddModal: function(header, booksInfo, magazineInfo){
+        showAddModal: function(header){
             this.clearStatus()
             this.infoHeader = header
             this.showSelect = true

@@ -15,4 +15,5 @@ $(window).resize(function () {
 
 $(document).ready(function(){
     fixSize()
+    refresh()
 })

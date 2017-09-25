@@ -8,31 +8,36 @@ var action_bar = new Vue({
     el: '#action_bar',
     data: {
         trashModel: false,
+        searchModel: false,
         keyword: ''
     },
     methods: {
         refresh: function(){
-            //刷新
-            console.log("刷新")
+            refresh()
         },
         trashbin: function(event){
             this.trashModel = !this.trashModel
-            console.log("切换到回收站模式")
+            refresh()
         },
         addItem: function(){
             if (this.trashModel){
-                //恢复
-                console.log("恢复" + basic_table.getChonseItemName().toString())
+                recoverItem()
             }else{
-                info_modal.showAddModal(addItemButtonName, [], [])
+                info_modal.showAddModal(addItemButtonName)
             }
         },
         search: function(){
             //搜索
             console.log("刷新:keyword = " + this.keyword)
+            if (this.keyword == "" || this.keyword == null){
+                refresh()
+            }else{
+                this.searchModel = true
+                search(this.keyword)
+            }
         },
         deleteItem: function(){
-            info_modal.showDeleteModal(deleteHeader, basic_table.getChonseItemName(), this.trashModel)
+            info_modal.showDeleteModal(deleteHeader, basic_table.getChosenItemName(), this.trashModel)
         }
     },
     computed: {

@@ -3,6 +3,9 @@ var book_addtion = ['ISBN', '作者', '页数', '字数']
 var magazine_addtion = ['ISSN', '检索', '学科领域', '影响因子', '出版周期', '每期论文数']
 var book_addtion_preprice = ['每千字价格']
 var magazine_addtion_avgprice = ['平均单篇论文价格']
+var table_param = ['id', 'name', 'classicIndex', 'inventory', 'borrowedNumber', 'publicationYear', 'publisher', 'price']
+var book_param = table_param.concat(['ISBN', 'editor', 'pageCount', 'letterCount'])
+var magazine_param = table_param.concat(['ISSN', 'ISDNumber', 'subject', 'impactFactor', 'publishingCycle', 'papers'])
 
 Vue.component('table-item', {
     data: function(){
@@ -43,14 +46,9 @@ Vue.component('table-header', {
     props: ['headers', 'chose'],
     template:
     '<tr>\
-    <td v-if="headers != null"><input type="checkbox" v-model="choseAll" @click="selectAll"/></td>\
+    <td v-if="headers != null"><input type="checkbox" v-model="choseAll" @click="$emit(\'click\')"/></td>\
     <td class="text-center" v-for="item in headers">{{ item }}</td>\
     </tr>',
-    methods:{
-        selectAll: function(){
-            this.$emit('click')
-        }
-    },
     watch: {
         chose(val){
             this.choseAll = val
@@ -63,20 +61,21 @@ var basic_table = new Vue({
     data: {
         itemArray: null,
         headers: table_header,
-        chosen: null,
+        chosen: new Set(),
         selectAll: false,
-        total_page: 1,
-        current_page: 1
+        total_page: 0,
+        current_page: 0
     },
     methods: {
         setItemList: function(total_page, current_page, current_list){
+            this.clearAllSelect()
             this.current_page = current_page
             this.total_page = total_page
             this.itemArray = current_list
         },
         showInfo: function(data){
             var index = data[0]
-            info_modal.showInfoModal(this.itemArray[index].name, getInfos(this.current_page, index))
+            info_modal.showInfoModal(this.itemArray[index].name, getInfos(this.current_page, index), getType(this.current_page, index))
         },
         choseItem: function(data){
             if (this.chosen == null) {
@@ -94,25 +93,44 @@ var basic_table = new Vue({
             }
         },
         choseAll: function(){
+            this.clearAllSelect()
             this.selectAll = !this.selectAll
+        },
+        clearAllSelect(){
             this.$children.forEach(function(child, index){
                 if (index != 0){
-                child.checked = false
+                    child.checked = false
                 }
             })
+            this.chosen.clear()
         },
-        getChonseItemName: function(){
+        getChosenItemName: function(){
             var tables = this
+            var temp = []
             this.chosen.forEach(function(element){
                 temp.push(tables.itemArray[element].name)
             })
             return temp
         },
-        before: function(){
-
+        getChosenItemId: function(){
+            var tables = this
+            var temp = []
+            this.chosen.forEach(function(element){
+                temp.push(tables.itemArray[element].id)
+            })
+            return temp
         },
-        next: function(){
-
+        changePage: function(next){
+            if (next){
+                this.current_page += 1
+            }else{
+                this.current_page -= 1
+            }
+            if (hasCache(this.current_page)){
+                this.itemArray = getTable(this.current_page)
+            }else{
+                getList(this.current_page)
+            }
         }
     },
     computed: {

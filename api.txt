@@ -1,6 +1,6 @@
 hostname: http://hostname/librarymanage
 getList:GET
-    /getList?trash=${trashModel}&page=${page, default=1}
+    /getList?  =${trashModel}&page=${page, default=1}
     {
         code: 0,
         data: {
@@ -33,7 +33,7 @@ delete:POST
     }
 
 search:GET
-    /search?trashModel=${trashModel}&keyword=${keyword default=""}&page=${page, default=1}
+    /search?trash=${trashModel}&keyword=${keyword default=""}&page=${page, default=1}
     {
         code: 0,
         total: 1,
@@ -67,7 +67,9 @@ upload:POST
         file = ${file}
     {
         code: 0,
-        msg: ""
+        data: {
+            size: 10
+        }
     }
 
 code

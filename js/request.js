@@ -1,4 +1,4 @@
-var hostname = "http://localhost/librarymanage"
+var hostname = "http://api.myhostylx.com"
 
 var GET = "get"
 var POST = "post"
@@ -19,78 +19,83 @@ var successHeader = "成功"
 var errorHeader = "错误"
 var api_error_message = "接口调用错误"
 
-var refresh = function(basic_table, info_modal, action_bar){
-    getList(basic_table, info_modal, action_bar, refreshPage)
+var refresh = function(){
+    action_bar.searchModel = false
+    deleteCache(action_bar.trashModel, false)
+    deleteCache(false, true)
+    deleteCache(true, true)
+    getList(refreshPage)
 }
 
-var getList = function(basic_table, info_modal, action_bar, page){
+var getList = function(page){
     var url = hostname + api_get_list
-    var data = {trashModel: action_bar.trashModel, page: page}
+    var data = {trash: action_bar.trashModel, page: page}
     var callback = function(response, args){
         var basic_table = args[0]
         var saveData = args[1]
+        var trashModel = args[2]
         saveData(response.data.current, response.data.table, response.data.addition)
         basic_table.setItemList(response.data.total, response.data.current, response.data.table)
     }
-    sendRequest(url, data, GET, info_modal, callback, [basic_table, saveData])
+    sendRequest(url, data, GET, info_modal, callback, [basic_table, saveData, action_bar.trashModel])
 }
 
 var deleteItems = function(){
     var url = hostname + api_delete
-    var deleteId = basic_table.getChonseItemName()
+    var deleteId = basic_table.getChosenItemId()
     var contain = ""
     deleteId.forEach(function(id){
-        contain += (id + "|")
+        contain += (id + ",")
     })
     var data = {ids: contain}
     var callback = function(response, args){
+        var info_modal = args[0]
         info_modal.showMessageModal(successHeader, "删除成功")
-        refresh(args[0], args[1], args[2])
+        refresh()
     }
-    sendRequest(url, data, POST, info_modal, callback, [basic_table, info_modal, action_bar])
+    sendRequest(url, data, POST, info_modal, callback, [info_modal])
 }
 
-var search = function(keyword){
+var search = function(keyword, page){
     var url = hostname + api_search
-    var data = {trashModel: action_bartrashModel, keyword: keyword}
+    var data = {trash: action_bar.trashModel, keyword: keyword, page: page}
     var callback = function(response, args){
         var basic_table = args[0]
-        basic_table.setItemList(response.total, response.current, response.list)
+        saveData(response.data.current, response.data.table, response.data.addition)
+        basic_table.setItemList(response.data.total, response.data.current, response.data.table)
     }
     sendRequest(url, data, GET, info_modal, callback, [basic_table])
 }
 
-var addItemInfo = function(type, item){
+var addItemInfo = function(item){
     var url = hostname + api_add
-    item["type"] = type
     var data = item
+    console.log(data);
     var callback = function(response, args){
-        var info_modal = args[1]
+        var info_modal = args[0]
         info_modal.showMessageModal(successHeader, "增加成功")
-        refresh(args[0], info_modal, args[2])
+        refresh()
     }
-    sendRequest(url, data, POST, info_modal, callback, [basic_table, info_modal, action_bar])
+    sendRequest(url, data, POST, info_modal, callback, [info_modal])
 }
 
 var recoverItem = function(){
-    var ids = basic_table.getChonseItemName()
+    var ids = basic_table.getChosenItemId()
     var url = hostname + api_recover
-    var data = {id: ids}
+    var contain = ""
+    ids.forEach(function(id){
+        contain += (id + ",")
+    })
+    var data = {ids: contain}
     var callback = function(response, args){
-        var basic_table = args[0]
-        var info_modal = args[1]
-        var action_bar = args[2]
-        info_modal.showMessage(successHeader, "恢复成功")
+        var info_modal = args[0]
+        var action_bar = args[1]
+        info_modal.showMessageModal(successHeader, "恢复成功")
         action_bar.trashModel = false
-        refresh(basic_table, info_modal, action_bar)
+        refresh()
     }
-    sendRequest(url, data, POST, info_modal, callback, [basic_table, info_modal, action_bar])
+    sendRequest(url, data, POST, info_modal, callback, [info_modal, action_bar])
 }
-
-var analyseData = function(data){
-
-}
-
 
 var buildPackage = function(type, infos){
     var data = {type: type, id: infos.id, name: infos.name, classicIndex: infos.classicIndex, inventory: infos.inventory,
@@ -111,17 +116,18 @@ var buildPackage = function(type, infos){
     }
 }
 
-var sendRequest(url, data, method, info_modal, callback, args){
+var sendRequest = function(url, data, method, info_modal, callback, args){
     $.ajax({
         type: method,
         url: url,
         data: data,
         dataType: dataType,
         complete: function(response, status){
-            if (status != "success" || response.code != 0){
-                info_modal.showMessageModal(errorHeader, status == "success" ? response.msg : api_error_message)
+            var data = response.responseJSON
+            if (status != "success" || data.code != 0){
+                info_modal.showMessageModal(errorHeader, status == "success" ? data.msg : api_error_message)
             }else{
-                callback(response, args)
+                callback(data, args)
             }
         }
     })
