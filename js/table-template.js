@@ -1,6 +1,6 @@
 var table_header = ['编号', '名称', '分类号', '库存数量', '借出数量', '出版时间', '出版单位', '价格']
 var book_addtion = ['ISBN', '作者', '页数', '字数']
-var magazine_addtion = ['ISSN', '检索', '学科领域', '影响因子', '出版周期', '每期论文数']
+var magazine_addtion = ['ISSN', '检索', '学科领域', '影响因子', '出版周期(月)', '每期论文数']
 var book_addtion_preprice = ['每千字价格']
 var magazine_addtion_avgprice = ['平均单篇论文价格']
 var table_param = ['id', 'name', 'classicIndex', 'inventory', 'borrowedNumber', 'publicationYear', 'publisher', 'price']

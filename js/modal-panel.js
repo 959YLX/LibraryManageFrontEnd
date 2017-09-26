@@ -29,12 +29,20 @@ Vue.component('info-item', {
     template: '\
                <div>\
                  <span class="left-item">{{ name }}:</span>\
-                 <span class="right-item" v-show="!edit">{{ value }}</span>\
-                 <input class="right-item text-right" v-if="edit" v-model="myValue"/>\
+                 <span class="right-item" v-show="showText">{{ value }}</span>\
+                 <input class="right-item text-right" v-if="!showText" v-model="myValue"/>\
                </div>',
     watch: {
         close(){
             this.$emit("final-value", [this.index, this.myValue])
+        },
+        value(val){
+            this.myValue = val
+        }
+    },
+    computed: {
+        showText: function(){
+            return (!this.edit || (this.index == 0 && this.myValue != null))
         }
     }
 })
@@ -149,6 +157,7 @@ var info_modal = new Vue({
             this.clearStatus()
             this.infoHeader = header
             this.message = message
+            this.showMessage = true
             this.showModal = true
         },
         showAddModal: function(header){
@@ -166,7 +175,7 @@ var info_modal = new Vue({
         },
         chosedFile: function(){
             this.showModal = false
-            //异步上传文件
+            upload()
         }
     },
     computed: {

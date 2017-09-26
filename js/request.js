@@ -70,7 +70,6 @@ var search = function(keyword, page){
 var addItemInfo = function(item){
     var url = hostname + api_add
     var data = item
-    console.log(data);
     var callback = function(response, args){
         var info_modal = args[0]
         info_modal.showMessageModal(successHeader, "增加成功")
@@ -95,6 +94,32 @@ var recoverItem = function(){
         refresh()
     }
     sendRequest(url, data, POST, info_modal, callback, [info_modal, action_bar])
+}
+
+var exportItem = function(trash){
+    var url = hostname + api_export
+    var param = "?trash=" + trash
+    window.open(url + param)
+}
+
+var upload = function(){
+    var url = hostname + api_upload
+    var formData = new FormData()
+    formData.append('file', $("#myFile")[0].files[0])
+    $.ajax({
+        url: url,
+        type: POST,
+        cache: false,
+        data: formData,
+        processData: false,
+        contentType: false,
+        complete: function(status){
+            if (status == "success"){
+                info_modal.showMessageModal(successHeader, "上传成功")
+                refresh()
+            }
+        }
+    })
 }
 
 var buildPackage = function(type, infos){
