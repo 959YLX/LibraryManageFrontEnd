@@ -1,4 +1,4 @@
-var hostname = "http://api.myhostylx.com"
+var hostname = "api"
 
 var GET = "get"
 var POST = "post"
@@ -10,6 +10,7 @@ var api_search = "/search"
 var api_add = "/add"
 var api_recover = "/recover"
 var api_upload = "/upload"
+var api_export = "/export"
 
 var dataType = "json"
 
@@ -80,6 +81,9 @@ var addItemInfo = function(item){
 
 var recoverItem = function(){
     var ids = basic_table.getChosenItemId()
+    if (ids.length == 0){
+        return
+    }
     var url = hostname + api_recover
     var contain = ""
     ids.forEach(function(id){

@@ -37,7 +37,10 @@ var action_bar = new Vue({
             }
         },
         deleteItem: function(){
-            info_modal.showDeleteModal(deleteHeader, basic_table.getChosenItemName(), this.trashModel)
+            var names = basic_table.getChosenItemName()
+            if (names.length > 0){
+                info_modal.showDeleteModal(deleteHeader, , this.trashModel)
+            }
         },
         exportItem: function(){
             exportItem(this.trashModel)

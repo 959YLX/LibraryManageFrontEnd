@@ -42,7 +42,7 @@ Vue.component('info-item', {
     },
     computed: {
         showText: function(){
-            return (!this.edit || (this.index == 0 && this.myValue != null))
+            return (!this.edit || (this.index == 0 && this.value != null))
         }
     }
 })
@@ -97,6 +97,7 @@ var info_modal = new Vue({
         enter: function(){
             if (this.showDelete){
                 //请求接口
+                deleteItems()
             }else if (this.editModal) {
                 //编辑模式
                 this.sendCloseCommand = !this.sendCloseCommand

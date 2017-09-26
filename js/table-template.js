@@ -97,6 +97,7 @@ var basic_table = new Vue({
             this.selectAll = !this.selectAll
         },
         clearAllSelect(){
+            this.selectAll = false
             this.$children.forEach(function(child, index){
                 if (index != 0){
                     child.checked = false
